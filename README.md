@@ -51,8 +51,8 @@ npm start(if doesnt work)(try) node app.js (or) npm i nodemon (then) nodemon app
 
 ### Front-end
 
-* Html
-* Css
+* HTML
+* CSS
 * JS
 * Jquery
 
