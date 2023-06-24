@@ -1,4 +1,4 @@
-# Vish_aviation_app
+# Covid_Booking_Application
 This is an app to book Vaccine and search for centers
 <br>
 
