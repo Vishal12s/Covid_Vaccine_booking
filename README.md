@@ -70,9 +70,9 @@ npm start(if doesnt work)(try) node app.js (or) npm i nodemon (then) nodemon app
 * [github](https://github.com/)
 
 ### Admin Login
-For admin login password is inbuilt as 
-username: admin
-password: password
+For admin login password is inbuilt as <br>
+username: admin<br>
+password: password<br>
 
 ### User Login
 user login will work only after u sign up
