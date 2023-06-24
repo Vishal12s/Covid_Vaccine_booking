@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #searchInput {
+        width: 300px;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+
+    #vaccinationCentersList {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #vaccinationCentersList li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    #vaccinationCentersList li span {
+        flex-grow: 1;
+    }
+
+    #vaccinationCentersList li button {
+        padding: 5px 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    #vaccinationCentersList li button:hover {
+        background-color: #45a049;
+    }
+</style>
+<body>
+    <h1>Welcome User</h1>
+    <input type="text" id="searchInput" placeholder="Enter center name">
+    <a href="Displayusers.html"><button>Recent booked users</button></a>
+    
+    
+
+    <ul id="vaccinationCentersList"></ul>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var vaccinationCenters = [
+            { name: "Chennai", id: 1 },
+            { name: "Mumbai", id: 2 },
+            { name: "Kolkata", id: 3 },
+            {name: "New Delhi",id:4},
+            {name: "Chennai Zone 1",id:5},
+            {name: "Chennai Zone 2",id:6},
+            {name:"Chennai Zone 3(Velachery)",id:7},
+            {name:"Ahamedabad",id:8},
+            {name:"Jammu",id:9},
+            {name:"Kashmir",id:10},
+            {name:"Kashmir Pak occupied",id:11},
+            {name:"Jammu-Srinagar",id:12},
+            {name:"Mumbai-Navi Mumbai",id:13},
+            {name:"Kolkata-West Bengal(zone)",id:14}
+            // Add more vaccination centers here
+        ];
+
+        document.getElementById('searchInput').addEventListener('input', searchVaccinationCenters);
+
+        function searchVaccinationCenters() {
+            var searchValue = document.getElementById('searchInput').value.toLowerCase();
+            var filteredCenters = vaccinationCenters.filter(function(center) {
+                return center.name.toLowerCase().includes(searchValue);
+            });
+
+            var vaccinationCentersList = document.getElementById('vaccinationCentersList');
+            vaccinationCentersList.innerHTML = ''; // Clear previous results
+
+            if (filteredCenters.length > 0) {
+                filteredCenters.forEach(function(center) {
+                    var listItem = document.createElement('li');
+                    var centerName = document.createElement('span');
+                    centerName.textContent = center.name;
+                    listItem.appendChild(centerName);
+
+                    var bookButton = document.createElement('button');
+                    bookButton.textContent = 'Book';
+                    bookButton.addEventListener('click', function() {
+                        bookAppointment(center.id); // Pass the center ID to the bookAppointment function
+                    });
+                    listItem.appendChild(bookButton);
+
+                    vaccinationCentersList.appendChild(listItem);
+                });
+            } else {
+                var listItem = document.createElement('li');
+                listItem.textContent = 'No results found.';
+                vaccinationCentersList.appendChild(listItem);
+            }
+        }
+
+        function bookAppointment(centerId) {
+            // Placeholder booking logic
+            alert('Booking appointment for center ID: ' + centerId);
+            // Replace the alert with your custom booking logic
+            // For example, you can make an API call or update the UI to reflect the booking process
+        }
+
+        
+        
+        
+    </script>
+</body>
+</html>

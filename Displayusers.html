@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booked Users</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+</style>
+
+<body>
+    <h1>Recently Booked Users</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>vaccine_center</th>
+                
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <!-- User data will be dynamically added here -->
+        </tbody>
+    </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            fetchUserList();
+        });
+
+        function fetchUserList() {
+            $.ajax({
+                url: '/getalluser',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'ok') {
+                        var users = response.data;
+                        renderUserList(users);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function renderUserList(users) {
+          var tableBody = $('#userTableBody');
+          tableBody.empty(); // Clear existing table body content
+          users.forEach(function(user) {
+            var row = '<tr><td>' + user.name + '</td><td>' + user.email + '</td><td>' + user.vaccine_center +'</td><tr>';
+            tableBody.append(row);
+          });
+        }
+        
+        // Attach click event listener to delete button
+        $(document).on('click', '.deleteButton', function() {
+          var userId = $(this).data('id');
+          deleteUser(userId);
+        });
+        
+        function deleteUser(userId) {
+          $.ajax({
+            url: '/deleteuser/' + userId,
+            type: 'DELETE',
+            dataType: 'json',
+            success: function(response) {
+              if (response.status === 'ok') {
+                console.log('User deleted successfully!');
+                location.reload(); // Refresh the page after deletion
+              }
+            },
+            error: function(xhr, status, error) {
+              console.log(error);
+            }
+          });
+        }
+        
+    </script>
+    
+</body>
+</html>

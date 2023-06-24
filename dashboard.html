@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link rel="stylesheet" href="public/style.css">
+</head>
+<body>
+    <h1>Welcome to dashboard</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>vaccine_center</th>
+                <th>Action :</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <!-- User data will be dynamically added here -->
+        </tbody>
+    </table>
+    <form action="/dashboard/add" method="post">
+      <label for="name">name :</label>
+      <input type="text" name="name">
+      <label for="email">email :</label>
+      <input type="text" name="email" id="">
+      <label for="vaccine_center">Vaccination Centre :</label>
+      <input type="text" name="vaccine_center" id="">
+      <button type="submit">Add User</button>
+      
+    </form>
+    <div class="dropdown">
+      <button class="dropbtn">Group By</button>
+      <div class="dropdown-content">
+        <select id="groupByDropdown">
+          <option value="all">All</option>
+          <!-- Add your options dynamically or manually here -->
+        </select>
+      </div>
+    </div>
+    
+    
+    
+    
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            fetchUserList();
+        });
+
+        function fetchUserList() {
+            $.ajax({
+                url: '/getalluser',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'ok') {
+                        var users = response.data;
+                        renderUserList(users);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function renderUserList(users) {
+          var tableBody = $('#userTableBody');
+          tableBody.empty(); // Clear existing table body content
+          users.forEach(function(user) {
+            var row = '<tr><td>' + user.name + '</td><td>' + user.email + '</td><td>' + user.vaccine_center +'</td><td><button class="deleteButton" data-id="' + user._id + '">Delete</button></td></tr>';
+            tableBody.append(row);
+          });
+        }
+        
+        // Attach click event listener to delete button
+        $(document).on('click', '.deleteButton', function() {
+          var userId = $(this).data('id');
+          deleteUser(userId);
+        });
+        
+        function deleteUser(userId) {
+          $.ajax({
+            url: '/deleteuser/' + userId,
+            type: 'DELETE',
+            dataType: 'json',
+            success: function(response) {
+              if (response.status === 'ok') {
+                console.log('User deleted successfully!');
+                location.reload(); // Refresh the page after deletion
+              }
+            },
+            error: function(xhr, status, error) {
+              console.log(error);
+            }
+          });
+        }
+        
+ 
+
+        
+    </script>
+
+
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+          }
+          
+          h1 {
+            text-align: center;
+            margin-top: 40px;
+          }
+          
+          p {
+            margin-bottom: 20px;
+          }
+          
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+          
+          th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+          }
+          
+          th {
+            background-color: #f2f2f2;
+          }
+          form{
+            padding: 20px;
+          }
+    </style>
+</body>
+</html>
